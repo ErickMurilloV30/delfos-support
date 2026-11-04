@@ -505,6 +505,101 @@
   margin-bottom: 2rem;
 }
 
+/* Botones de acción en Modo Recorrido */
+.recorrido-actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--borde);
+  flex-wrap: wrap;
+}
+
+.recorrido-actions-bar .btn {
+  height: 52px;
+  min-height: 52px;
+  font-size: 0.98rem;
+  font-weight: 700;
+}
+
+/* Tarjetas de Salones en Modo Recorrido */
+.salones-recorrido-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  padding: 1rem 1.25rem 2rem 1.25rem;
+}
+
+.salon-recorrido-card {
+  background: var(--tarjeta);
+  border: 1.5px solid var(--borde);
+  border-radius: var(--radio-md);
+  padding: 1.15rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: all var(--transicion-rapida);
+}
+
+.salon-recorrido-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: var(--sombra-sm);
+}
+
+.salon-recorrido-card.is-active-editing {
+  border-color: var(--dorado);
+  background: #FEFDF9;
+  box-shadow: 0 0 0 2px rgba(245, 183, 49, 0.25);
+}
+
+.salon-info-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1;
+}
+
+.salon-info-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.salon-info-sub {
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.salon-equipos-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #1E3A8A;
+  background: #EFF6FF;
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radio-full);
+}
+
+.salon-recorrido-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
 /* ==========================================================================
    RESPONSIVE ESPECÍFICO DE VISTAS
    ========================================================================== */
@@ -528,5 +623,27 @@
   }
   .report-paper-sheet {
     padding: 1.5rem;
+  }
+  .recorrido-actions-bar {
+    flex-direction: column;
+  }
+  .recorrido-actions-bar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .salon-recorrido-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .salon-recorrido-actions {
+    width: 100%;
+    justify-content: flex-end;
+    border-top: 1px dashed var(--borde);
+    padding-top: 0.75rem;
+  }
+  .salon-recorrido-actions .btn {
+    flex: 1;
+    justify-content: center;
   }
 }
