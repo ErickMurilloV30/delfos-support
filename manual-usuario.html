@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Manual de Usuario Oficial - Delfos Support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --verde: #1B6B3A;
+      --verde-medio: #175A31;
+      --verde-oscuro: #0D4221;
+      --dorado: #F5B731;
+      --texto: #1A1B2E;
+      --texto-suave: #6B7280;
+      --fondo: #F6F7F9;
+      --borde: #E5E7EB;
+      --tarjeta: #FFFFFF;
+      --azul: #2563EB;
+      --rojo: #DC2626;
+      --ambar: #D97706;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: var(--texto);
+      background-color: #FFFFFF;
+      line-height: 1.6;
+      font-size: 13.5px;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 14mm 12mm 14mm 12mm;
+    }
+
+    @media print {
+      body {
+        background-color: #FFFFFF;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .no-break {
+        page-break-inside: avoid;
+      }
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* PORTADA */
+    .cover {
+      background: linear-gradient(135deg, var(--verde) 0%, var(--verde-medio) 55%, var(--verde-oscuro) 100%);
+      color: #FFFFFF;
+      border-radius: 18px;
+      padding: 45px 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 25px rgba(27, 107, 58, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover::after {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(245, 183, 49, 0.12);
+      pointer-events: none;
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 30px;
+      padding: 6px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 20px;
+    }
+
+    .brand-badge .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--dorado);
+    }
+
+    .cover-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+
+    .cover-title span {
+      color: var(--dorado);
+    }
+
+    .cover-subtitle {
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 650px;
+      margin-bottom: 28px;
+      font-weight: 500;
+    }
+
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 18px;
+    }
+
+    .meta-box span {
+      display: block;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.7);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .meta-box strong {
+      font-size: 13px;
+      color: #FFFFFF;
+    }
+
+    /* INDICE */
+    .toc {
+      background-color: var(--fondo);
+      border: 1px solid var(--borde);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .toc-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--verde);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 24px;
+    }
+
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 4px;
+      font-size: 12.5px;
+    }
+
+    .toc-item a {
+      color: var(--texto);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .toc-item span {
+      color: var(--verde);
+      font-weight: 700;
+    }
+
+    /* SECCIONES */
+    .section {
+      margin-bottom: 35px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid var(--borde);
+      padding-bottom: 8px;
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--verde);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--texto);
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #374151;
+    }
+
+    /* TARJETAS DE CARACTERISTICAS */
+    .card {
+      background: #FFFFFF;
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .card-header {
+      font-weight: 700;
+      color: var(--verde);
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* IMAGENES Y SCREENSHOTS */
+    .screenshot-container {
+      border: 1px solid var(--borde);
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 16px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      background: #F8FAFC;
+    }
+
+    .screenshot-header {
+      background: #E2E8F0;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .screenshot-header .dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .screenshot-header .dot-circle {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #94A3B8;
+    }
+
+    .screenshot-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .screenshot-caption {
+      padding: 8px 12px;
+      font-size: 11.5px;
+      color: var(--texto-suave);
+      font-style: italic;
+      background: #FFFFFF;
+      border-top: 1px solid var(--borde);
+    }
+
+    /* PASOS */
+    .step-box {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .step-badge {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #EBF9F5;
+      color: var(--verde);
+      border: 1px solid #16A34A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-content strong {
+      display: block;
+      color: var(--texto);
+      font-size: 13.5px;
+      margin-bottom: 3px;
+    }
+
+    /* TABLAS */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12.5px;
+    }
+
+    th {
+      background: #F1F5F9;
+      color: var(--texto);
+      font-weight: 700;
+      text-align: left;
+      padding: 8px 12px;
+      border: 1px solid var(--borde);
+    }
+
+    td {
+      padding: 8px 12px;
+      border: 1px solid var(--borde);
+      color: #334155;
+    }
+
+    tr:nth-child(even) td {
+      background: #F8FAFC;
+    }
+
+    /* CALLOUT ALERTS */
+    .callout {
+      border-left: 4px solid var(--verde);
+      background: #EBF9F5;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 12.5px;
+    }
+
+    .callout-gold {
+      border-left-color: var(--dorado);
+      background: #FEF7EB;
+    }
+
+    .callout-blue {
+      border-left-color: var(--azul);
+      background: #EFF6FF;
+    }
+
+    .callout-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .tag-green { background: #DCFCE7; color: #166534; }
+    .tag-amber { background: #FEF3C7; color: #92400E; }
+    .tag-red { background: #FEE2E2; color: #991B1B; }
+    .tag-blue { background: #DBEAFE; color: #1E40AF; }
+
+    /* FOOTER */
+    .doc-footer {
+      border-top: 1px solid var(--borde);
+      padding-top: 15px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--texto-suave);
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- PORTADA -->
+    <div class="cover">
+      <div class="brand-badge">
+        <span class="dot"></span>
+        <span>Unidad Educativa Delfos · Manual Operativo</span>
+      </div>
+      <h1 class="cover-title">Manual de Usuario Oficial<br><span>Delfos Support</span></h1>
+      <p class="cover-subtitle">Guía integral y práctica para el registro ultrarrápido de incidencias de TI, administración de inventario físico y generación automatizada de informes mensuales y anuales.</p>
+
+      <div class="cover-meta">
+        <div class="meta-box">
+          <span>Técnico Responsable</span>
+          <strong>Erick Murillo</strong>
+        </div>
+        <div class="meta-box">
+          <span>Enlace Oficial Web</span>
+          <strong>erickmurillov30.github.io/delfos-support</strong>
+        </div>
+        <div class="meta-box">
+          <span>Versión y Estado</span>
+          <strong>v1.0 · Producción Activa</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- INDICE -->
+    <div class="toc no-break">
+      <div class="toc-title"><i class="fa-solid fa-list-check"></i> Contenido del Manual</div>
+      <div class="toc-grid">
+        <div class="toc-item"><a href="#sec-1">1. Acceso y Uso en Celular (PWA)</a> <span>Pág. 1</span></div>
+        <div class="toc-item"><a href="#sec-2">2. Dashboard de Control Diario</a> <span>Pág. 2</span></div>
+        <div class="toc-item"><a href="#sec-3">3. Registro de Soporte en 20 Segundos</a> <span>Pág. 3</span></div>
+        <div class="toc-item"><a href="#sec-4">4. Inventario y Caso Práctico "Salón Zeus"</a> <span>Pág. 4</span></div>
+        <div class="toc-item"><a href="#sec-5">5. Modo Recorrido Aula por Aula</a> <span>Pág. 5</span></div>
+        <div class="toc-item"><a href="#sec-6">6. Historial, Filtros y Exportación CSV</a> <span>Pág. 6</span></div>
+        <div class="toc-item"><a href="#sec-7">7. Ficha Técnica y Equipos Problemáticos</a> <span>Pág. 7</span></div>
+        <div class="toc-item"><a href="#sec-8">8. Informes Mensuales (PDF y PPTX)</a> <span>Pág. 8</span></div>
+        <div class="toc-item"><a href="#sec-9">9. Respaldos Seguros y Atajos</a> <span>Pág. 9</span></div>
+      </div>
+    </div>
+
+    <!-- SECCION 1 -->
+    <div class="section" id="sec-1">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-title">Acceso y Funcionamiento Móvil (PWA)</div>
+      </div>
+      <p><strong>Delfos Support</strong> está diseñado bajo una arquitectura <em>Offline-First</em>. Esto significa que funciona en la nube pero almacena todos los datos en la base de datos interna de tu navegador (IndexedDB). No depende de conexiones lentas de internet para guardar soportes.</p>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-mobile-screen-button"></i> ¿Cómo instalarlo en tu celular como App?</div>
+        <div class="step-box">
+          <div class="step-badge">1</div>
+          <div class="step-content">
+            <strong>Abre el link en tu teléfono</strong>
+            Entra desde Google Chrome o Safari a: <br>
+            <code>https://erickmurillov30.github.io/delfos-support/</code>
+          </div>
+        </div>
+        <div class="step-box">
+          <div class="step-badge">2</div>
+          <div class="step-content">
+            <strong>Presiona los 3 puntos (Opciones del navegador)</strong>
+            En Chrome toca los 3 puntos arriba a la derecha. En Safari (iPhone) toca el botón central de compartir.
+          </div>
+        </div>
+        <div class="step-box">
+          <div class="step-badge">3</div>
+          <div class="step-content">
+            <strong>Elige "Agregar a pantalla principal"</strong>
+            Se creará un acceso directo con el icono verde institucional de Delfos. Abrirá en pantalla completa como una aplicación nativa.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCION 2 -->
+    <div class="section page-break" id="sec-2">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-title">Dashboard Principal (Panel de Control)</div>
+      </div>
+      <p>El Dashboard es la pantalla inicial. Ofrece una vista panorámica en tiempo real de todo el mes en curso:</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Vista Panorámica del Dashboard · Delfos Support</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_dashboard.png" alt="Dashboard">
+        <div class="screenshot-caption">Figura 2.1: Banner con saludo dinámico, tarjetas métricas del mes y gráficas de incidencias.</div>
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-chart-pie"></i> Elementos Clave del Dashboard:</div>
+        <ul style="padding-left: 20px; line-height: 1.8;">
+          <li><strong>Banner Verde Principal:</strong> Saludo cordial, fecha actual en formato español y botón de acceso directo a <em>"Nuevo Soporte"</em>.</li>
+          <li><strong>Tarjetas Métricas:</strong> Conteo automático de Soportes del mes, Mantenimientos preventivos, Instalaciones nuevas, Equipos únicos atendidos y Soportes pendientes.</li>
+          <li><strong>Gráficas Interactivas:</strong> Incidencias por categoría, incidencias por ubicación/edificio, y problemas más frecuentes generados por Chart.js.</li>
+          <li><strong>Lista de Pendientes:</strong> Sección especial para casos no cerrados con botón de un toque para <span class="tag tag-green">Marcar Resuelto</span>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCION 3 -->
+    <div class="section page-break" id="sec-3">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title">Registro de Soporte en menos de 20 Segundos</div>
+      </div>
+      <p>La pantalla más importante del sistema. Optimizada ergonómicamente para que el técnico registre una actividad y vuelva al trabajo inmediatamente.</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Formulario de Registro Rápido</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_nuevo-soporte.png" alt="Nuevo Soporte">
+        <div class="screenshot-caption">Figura 3.1: Formulario ultra ágil con atajos de teclado y selección inteligente.</div>
+      </div>
+
+      <div class="callout no-break">
+        <div class="callout-title"><i class="fa-solid fa-bolt"></i> Regla de Oro: Solo 3 Campos Obligatorios</div>
+        Para que el registro no sea burocrático, solo son estrictamente necesarios: <strong>Ubicación</strong>, <strong>Categoría</strong> y <strong>Tipo de Actividad</strong>. Todo lo demás es opcional.
+      </div>
+
+      <div class="step-box no-break">
+        <div class="step-badge">1</div>
+        <div class="step-content">
+          <strong>Seleccionar Ubicación</strong>
+          Escribe las primeras letras del aula u oficina (ej. <em>"Salón"</em> o <em>"Zeus"</em>). El sistema recordará la última que usaste.
+        </div>
+      </div>
+
+      <div class="step-box no-break">
+        <div class="step-badge">2</div>
+        <div class="step-content">
+          <strong>Elegir Equipo(s) - Opcional</strong>
+          Al elegir la ubicación, el selector te mostrará únicamente los equipos que existen físicamente en esa sala. Puedes buscar escribiendo el número (ej. "01" te sugiere <code>PC-01</code> o <code>PRY-01</code>). También cuenta con el botón <em>"Todos los equipos de esta ubicación"</em> para mantenimientos colectivos.
+        </div>
+      </div>
+
+      <div class="step-box no-break">
+        <div class="step-badge">3</div>
+        <div class="step-content">
+          <strong>Categoría y Problema</strong>
+          Selecciona la categoría (Proyector, Red/Internet, Impresora, Hardware, etc.). Al elegir un problema típico, la categoría se autocompleta.
+        </div>
+      </div>
+
+      <div class="step-box no-break">
+        <div class="step-badge">4</div>
+        <div class="step-content">
+          <strong>Guardar</strong>
+          Presiona el botón verde <strong>Guardar Soporte</strong> o usa el atajo universal: <kbd style="background:#E2E8F0; padding:2px 6px; border-radius:4px; font-weight:700;">Ctrl + Enter</kbd>.
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCION 4 -->
+    <div class="section page-break" id="sec-4">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-title">Inventario y Caso Práctico: Registro de "Salón Zeus"</div>
+      </div>
+      <p>El módulo de inventario te permite gestionar todos los edificios, salones, departamentos y equipos con total autonomía.</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Módulo de Inventario · Pestañas de Ubicaciones y Equipos</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_inventario.png" alt="Inventario">
+        <div class="screenshot-caption">Figura 4.1: Vista del inventario con buscador, filtros por edificio y listado de equipos.</div>
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-graduation-cap"></i> Ejemplo Práctico: ¿Cómo registrar el "Salón Zeus"?</div>
+        <p>Supongamos que deseas ingresar el <strong>Salón Zeus</strong> ubicado en el <em>Edificio Principal</em>, el cual cuenta con <strong>1 Proyector</strong>, <strong>1 Computadora de escritorio</strong> y <strong>1 Parlante / Barra de sonido</strong>.</p>
+        
+        <div class="step-box">
+          <div class="step-badge">A</div>
+          <div class="step-content">
+            <strong>Paso 1: Crear la Ubicación</strong>
+            Ve a <strong>Inventario</strong> → pestaña <strong>Ubicaciones</strong> → clic en <strong>"+ Nueva Ubicación"</strong>.<br>
+            • <em>Nombre:</em> Salón Zeus<br>
+            • <em>Edificio:</em> Edificio Principal<br>
+            • <em>Tipo:</em> Salón de clases<br>
+            • <em>Referencia:</em> Planta Alta (o lo que aplique)<br>
+            Clic en <strong>"Guardar Ubicación"</strong>.
+          </div>
+        </div>
+
+        <div class="step-box">
+          <div class="step-badge">B</div>
+          <div class="step-content">
+            <strong>Paso 2: Asignar los Equipos al Salón Zeus</strong>
+            En la pestaña <strong>Equipos</strong> → clic en <strong>"+ Nuevo Equipo"</strong>:<br>
+            1. Eliges tipo <em>Proyector</em> ➔ El sistema autogenera el código correlativo <code>PRY-01</code>. Seleccionas ubicación <em>Salón Zeus</em> y guardas.<br>
+            2. Repites con tipo <em>Computadora</em> ➔ Se genera <code>PC-01</code> asignada a <em>Salón Zeus</em>.<br>
+            3. Repites con <em>Barra de sonido / Parlante</em> ➔ Se genera <code>BAR-01</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCION 5 -->
+    <div class="section page-break" id="sec-5">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-title">El "Modo Recorrido" (Paso a paso ágil)</div>
+      </div>
+      <p>El <strong>Modo Recorrido</strong> es una herramienta exclusiva diseñada para hacer levantamientos rápidos de inventario caminando aula por aula con tu teléfono celular:</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Modo Recorrido Móvil con Contadores Grandes</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_recorrido.png" alt="Modo Recorrido">
+        <div class="screenshot-caption">Figura 5.1: Pantalla táctil con contadores + y - para registrar salones y equipos en un solo toque.</div>
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-person-walking"></i> ¿Cómo hacer el Salón Zeus en 15 segundos con Modo Recorrido?</div>
+        <ol style="padding-left: 20px; line-height: 1.8;">
+          <li>Entra a <strong>Modo Recorrido</strong> desde el menú.</li>
+          <li>Selecciona Edificio: <strong>Edificio Principal</strong>.</li>
+          <li>Escribe el nombre: <strong>Salón Zeus</strong> y tipo <strong>Salón de clases</strong>.</li>
+          <li>Toca el botón <strong>`+`</strong> en Proyector (queda en 1), el <strong>`+`</strong> en Computadora (queda en 1) y el <strong>`+`</strong> en Barra de sonido (queda en 1).</li>
+          <li>Toca <strong>"Guardar y siguiente salón"</strong>.</li>
+        </ol>
+        <p style="margin-top: 10px; font-weight: 600; color: var(--verde);">
+          ¡El sistema creará la ubicación y todos los equipos con sus códigos oficiales en un solo clic!
+        </p>
+      </div>
+    </div>
+
+    <!-- SECCION 6 -->
+    <div class="section page-break" id="sec-6">
+      <div class="section-header">
+        <div class="section-number">6</div>
+        <div class="section-title">Historial, Filtros y Exportación CSV / Excel</div>
+      </div>
+      <p>En el Historial puedes auditar cualquier actividad realizada en la institución con filtros cruzados instantáneos.</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Historial General de Soportes</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_historial.png" alt="Historial">
+        <div class="screenshot-caption">Figura 6.1: Tabla de registros con badges de estado, acciones rápidas y exportación a hoja de cálculo.</div>
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-filter"></i> Capacidades del Historial:</div>
+        <ul style="padding-left: 20px; line-height: 1.8;">
+          <li><strong>Filtros Simultáneos:</strong> Filtra por rango de fechas (desde/hasta), edificio, aula específica, equipo, estado (<span class="tag tag-amber">Pendiente</span> / <span class="tag tag-green">Resuelto</span>) y categoría.</li>
+          <li><strong>Búsqueda en Vivo:</strong> Escribe cualquier palabra en el buscador libre y la tabla se filtra al instante.</li>
+          <li><strong>Exportar a CSV:</strong> Descarga el resultado filtrado exacto en formato CSV compatible con Microsoft Excel para análisis externo.</li>
+          <li><strong>Borrado Seguro con Deshacer:</strong> Si eliminas un registro por error, una notificación (toast) te da 5 segundos para deshacer la acción.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- SECCION 7 -->
+    <div class="section page-break" id="sec-7">
+      <div class="section-header">
+        <div class="section-number">7</div>
+        <div class="section-title">Informes Ejecutivos Oficiales (PDF y PowerPoint)</div>
+      </div>
+      <p>Al finalizar el mes, generar el reporte de labores para las autoridades de la institución toma menos de 1 minuto:</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Generador Automático de Informes Mensuales</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_informes.png" alt="Informes">
+        <div class="screenshot-caption">Figura 7.1: Previsualización de resumen ejecutivo, estadísticas consolidadas y exportación formal.</div>
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-file-export"></i> Formatos de Salida Disponibles:</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px;">
+          <div style="border: 1px solid var(--borde); border-radius: 8px; padding: 12px; background: #FAF5FF;">
+            <strong style="color: #6B21A8;"><i class="fa-solid fa-file-pdf"></i> Informe PDF (jsPDF)</strong>
+            <p style="font-size: 12px; margin-top: 4px;">Genera un documento formal con membrete institucional, datos del técnico, resumen ejecutivo en prosa profesional, gráficos a color y desglose de soportes en tabla.</p>
+          </div>
+          <div style="border: 1px solid var(--borde); border-radius: 8px; padding: 12px; background: #FFFBEB;">
+            <strong style="color: #92400E;"><i class="fa-solid fa-file-powerpoint"></i> Diapositivas PPTX (PptxGenJS)</strong>
+            <p style="font-size: 12px; margin-top: 4px;">Crea una presentación en PowerPoint con portada, resumen gerencial, diapositivas con gráficas incrustadas, top de equipos con más fallas y conclusiones.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECCION 8 -->
+    <div class="section page-break" id="sec-8">
+      <div class="section-header">
+        <div class="section-number">8</div>
+        <div class="section-title">Respaldos de Seguridad y Atajos de Teclado</div>
+      </div>
+      <p>La seguridad de tus datos es primordial. El sistema incluye un motor completo de importación y exportación de respaldos.</p>
+
+      <div class="screenshot-container no-break">
+        <div class="screenshot-header">
+          <div class="dots"><div class="dot-circle"></div><div class="dot-circle"></div><div class="dot-circle"></div></div>
+          <span>Módulo de Respaldos de Datos</span>
+        </div>
+        <img class="screenshot-img" src="screenshot_respaldo.png" alt="Respaldos">
+        <div class="screenshot-caption">Figura 8.1: Panel para descargar y restaurar copias de seguridad completas en formato JSON.</div>
+      </div>
+
+      <div class="callout callout-gold no-break">
+        <div class="callout-title"><i class="fa-solid fa-shield-halved"></i> Recomendación Semanal de Seguridad</div>
+        Cada viernes o fin de mes, ingresa a <strong>Respaldos</strong> y presiona <strong>"Crear respaldo"</strong>. Se descargará un archivo <code>delfos-respaldo-AAAA-MM-DD.json</code>. Si cambias de computadora o formateas, simplemente vas a <em>"Restaurar respaldo"</em> y cargas el archivo; toda tu información reaparecerá al 100%.
+      </div>
+
+      <div class="card no-break">
+        <div class="card-header"><i class="fa-solid fa-keyboard"></i> Atajos de Teclado para Productividad Máxima</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Atajo</th>
+              <th>Acción Inmediata</th>
+              <th>Contexto</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><kbd style="font-weight:700; background:#E2E8F0; padding:2px 6px; border-radius:4px;">N</kbd></td>
+              <td>Abre directamente el formulario de <strong>Nuevo Soporte</strong></td>
+              <td>En cualquier pantalla</td>
+            </tr>
+            <tr>
+              <td><kbd style="font-weight:700; background:#E2E8F0; padding:2px 6px; border-radius:4px;">Ctrl + Enter</kbd></td>
+              <td><strong>Guarda</strong> el soporte actual de inmediato</td>
+              <td>Dentro del formulario</td>
+            </tr>
+            <tr>
+              <td><kbd style="font-weight:700; background:#E2E8F0; padding:2px 6px; border-radius:4px;">Esc</kbd></td>
+              <td>Cierra cualquier ventana modal abierta</td>
+              <td>Modales y alertas</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="doc-footer">
+        <strong>Unidad Educativa Delfos · Departamento de Soporte y Tecnologías de la Información</strong><br>
+        Delfos Support v1.0 — Guía Técnica Elaborada para el Técnico Erick Murillo · Noviembre 2026
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
