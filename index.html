@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Delfos Support - Herramienta Personal de Soporte Técnico</title>
+
+  <!-- Fuentes de Google: Plus Jakarta Sans (400, 500, 600, 700, 800) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome 6 (Íconos de línea y sólidos) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Hojas de Estilo Propias -->
+  <link rel="stylesheet" href="assets/css/variables.css">
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/componentes.css">
+  <link rel="stylesheet" href="assets/css/vistas.css">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%231B6B3A'/><text x='50' y='70' font-size='60' font-weight='800' font-family='sans-serif' text-anchor='middle' fill='%23F5B731'>D</text></svg>">
+</head>
+<body>
+  <!-- Contenedor Maestro de la Aplicación -->
+  <div class="app-shell">
+
+    <!-- Backdrop para dispositivos móviles al abrir el menú lateral -->
+    <div class="sidebar-backdrop"></div>
+
+    <!-- BARRA LATERAL (SIDEBAR EN DESKTOP) -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-logo">D</div>
+          <div class="brand-text">
+            <span class="brand-title">Delfos <span>Support</span></span>
+            <span class="brand-subtitle">Gestión Técnica TI</span>
+          </div>
+        </div>
+        <button type="button" class="sidebar-close-btn" id="btn-close-sidebar" aria-label="Cerrar menú lateral">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Principal</span>
+        <a class="nav-item active" data-nav-vista="dashboard" data-vista="dashboard" href="#dashboard">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Inicio (Dashboard)</span>
+        </a>
+        <a class="nav-item" data-nav-vista="nuevo-soporte" data-vista="nuevo-soporte" href="#nuevo-soporte">
+          <i class="fa-solid fa-circle-plus" style="color:var(--verde);"></i>
+          <span>Nuevo soporte</span>
+          <span class="badge-count" style="background:var(--verde); color:#FFFFFF;">N</span>
+        </a>
+        <a class="nav-item" data-nav-vista="historial" data-vista="historial" href="#historial">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Historial</span>
+        </a>
+        <a class="nav-item" data-nav-vista="estadisticas" data-vista="estadisticas" href="#estadisticas">
+          <i class="fa-solid fa-chart-simple"></i>
+          <span>Estadísticas</span>
+        </a>
+
+        <span class="nav-section-label" style="margin-top:0.75rem;">Equipamiento & Planta</span>
+        <a class="nav-item" data-nav-vista="inventario" data-vista="inventario" href="#inventario">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Inventario</span>
+        </a>
+        <a class="nav-item" data-nav-vista="recorrido" data-vista="recorrido" href="#recorrido">
+          <i class="fa-solid fa-person-walking"></i>
+          <span>Modo Recorrido</span>
+        </a>
+
+        <span class="nav-section-label" style="margin-top:0.75rem;">Cierre & Seguridad</span>
+        <a class="nav-item" data-nav-vista="informes" data-vista="informes" href="#informes">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>Informes (PDF/PPTX)</span>
+        </a>
+        <a class="nav-item" data-nav-vista="respaldos" data-vista="respaldos" href="#respaldos">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Respaldos</span>
+        </a>
+        <a class="nav-item" data-nav-vista="configuracion" data-vista="configuracion" href="#configuracion">
+          <i class="fa-solid fa-gears"></i>
+          <span>Configuración</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="tech-indicator">
+          <span class="status-dot-pulse"></span>
+          <span>100% Offline y Privado</span>
+        </div>
+        <span style="font-size:0.75rem; color:var(--texto-suave);">v1.0</span>
+      </div>
+    </aside>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="main-container">
+      <!-- BARRA SUPERIOR (TOPBAR) -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button type="button" class="menu-toggle-btn" id="btn-toggle-menu" aria-label="Abrir menú">
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div class="global-search-container">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="global-search-input" class="global-search-input" placeholder="Buscar soportes, equipos, ubicaciones... (Presiona Enter)">
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Botón de Registro Rápido en Encabezado (Desktop) -->
+          <button type="button" class="quick-action-header-btn" onclick="Delfos.Estado.cambiarVista('nuevo-soporte')">
+            <i class="fa-solid fa-plus"></i>
+            <span>Nuevo soporte</span>
+            <kbd>N</kbd>
+          </button>
+
+          <!-- Chip de Hora en Vivo y Técnico -->
+          <div class="topbar-chip">
+            <i class="fa-regular fa-clock"></i>
+            <span class="chip-clock-time">--:--</span>
+            <span style="color:var(--borde); margin:0 2px;">|</span>
+            <i class="fa-regular fa-user"></i>
+            <span class="chip-tech-name">Técnico</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- ÁREA DE CONTENIDO DINÁMICO DE LA VISTA ACTIVA -->
+      <main class="content-area">
+        <div id="vista-activa-container">
+          <!-- Las vistas (Dashboard, Nuevo soporte, Historial, etc.) se inyectan dinámicamente aquí -->
+        </div>
+      </main>
+    </div>
+
+    <!-- BOTÓN FLOTANTE DE ACCIÓN (FAB) EN MÓVIL PARA REGISTRO ULTRA RÁPIDO -->
+    <button type="button" class="fab-nuevo" id="fab-nuevo-soporte" aria-label="Nuevo soporte técnico">
+      <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <!-- BARRA DE NAVEGACIÓN INFERIOR (MÓVIL) -->
+    <nav class="mobile-bottom-nav">
+      <a class="mobile-nav-btn active" data-nav-vista="dashboard" data-vista="dashboard" href="#dashboard">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Inicio</span>
+      </a>
+      <a class="mobile-nav-btn" data-nav-vista="historial" data-vista="historial" href="#historial">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Historial</span>
+      </a>
+      <a class="mobile-nav-btn" data-nav-vista="recorrido" data-vista="recorrido" href="#recorrido">
+        <i class="fa-solid fa-person-walking"></i>
+        <span>Recorrido</span>
+      </a>
+      <a class="mobile-nav-btn" data-nav-vista="informes" data-vista="informes" href="#informes">
+        <i class="fa-solid fa-file-contract"></i>
+        <span>Informes</span>
+      </a>
+      <a class="mobile-nav-btn" data-nav-vista="configuracion" data-vista="configuracion" href="#configuracion">
+        <i class="fa-solid fa-gears"></i>
+        <span>Ajustes</span>
+      </a>
+    </nav>
+
+    <!-- Contenedor flotante de notificaciones Toast -->
+    <div id="toast-container"></div>
+  </div>
+
+  <!-- ==========================================================================
+       LIBRERÍAS DE TERCEROS POR CDN (VERSIONES FIJAS)
+       Sin bundlers, sin frameworks, compatible con file:// y servidores estáticos
+       ========================================================================== -->
+  <!-- Chart.js 4.4.1 (Gráficas interactivas) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- jsPDF 2.5.1 + jspdf-autotable 3.8.2 (Generación oficial de reportes en PDF) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- PptxGenJS 3.12.0 (Generación de presentaciones en PowerPoint .pptx) -->
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+  <!-- ==========================================================================
+       SCRIPTS DE LA APLICACIÓN DELFOS SUPPORT (NAMESPACE GLOBAL window.Delfos)
+       ========================================================================== -->
+  <script src="assets/js/db.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/seed.js"></script>
+  <script src="assets/js/estado.js"></script>
+
+  <!-- Módulos de Vistas -->
+  <script src="assets/js/vistas/dashboard.js"></script>
+  <script src="assets/js/vistas/nuevo-soporte.js"></script>
+  <script src="assets/js/vistas/historial.js"></script>
+  <script src="assets/js/vistas/ficha-equipo.js"></script>
+  <script src="assets/js/vistas/inventario.js"></script>
+  <script src="assets/js/vistas/recorrido.js"></script>
+  <script src="assets/js/vistas/estadisticas.js"></script>
+  <script src="assets/js/vistas/informes.js"></script>
+  <script src="assets/js/vistas/respaldo.js"></script>
+  <script src="assets/js/vistas/configuracion.js"></script>
+
+  <!-- Bootstrap y Orquestación Principal -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

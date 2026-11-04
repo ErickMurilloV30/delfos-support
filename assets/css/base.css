@@ -1,0 +1,486 @@
+/* ==========================================================================
+   DELFOS SUPPORT - ESTILOS BASE Y MAQUETACIÓN
+   Reset, tipografía, estructura app-shell y responsive mobile-first
+   ========================================================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: var(--fuente-principal);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--texto);
+  background-color: var(--fondo);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Scrollbar Estilizada --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--fondo);
+}
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: var(--radio-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
+/* --- Accesibilidad y Enlaces --- */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  outline: none;
+}
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 2px;
+}
+
+/* --- Estructura Principal de la App (App Shell) --- */
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* --- Barra Lateral (Desktop) --- */
+.sidebar {
+  width: var(--ancho-sidebar);
+  background: var(--tarjeta);
+  border-right: 1px solid var(--borde);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transition: transform var(--transicion-normal);
+}
+
+.sidebar-header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--borde);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  background: var(--verde);
+  color: var(--dorado);
+  border-radius: var(--radio-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  box-shadow: 0 4px 10px rgba(27, 107, 58, 0.25);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--verde);
+  line-height: 1.1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.brand-title span {
+  color: var(--dorado);
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.sidebar-close-btn {
+  display: none;
+  font-size: 1.2rem;
+  color: var(--texto-suave);
+  padding: 0.4rem;
+  border-radius: var(--radio-md);
+}
+
+/* --- Menú de Navegación Lateral --- */
+.sidebar-nav {
+  flex: 1;
+  padding: 1.25rem 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.nav-section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  padding: 0.75rem 0.75rem 0.35rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radio-full);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--texto);
+  transition: background-color var(--transicion-rapida), color var(--transicion-rapida);
+  cursor: pointer;
+  user-select: none;
+}
+
+.nav-item i {
+  font-size: 1.1rem;
+  width: 22px;
+  text-align: center;
+  color: var(--texto-suave);
+  transition: color var(--transicion-rapida);
+}
+
+.nav-item:hover {
+  background-color: var(--fondo);
+  color: var(--verde);
+}
+.nav-item:hover i {
+  color: var(--verde);
+}
+
+.nav-item.active {
+  background-color: var(--verde);
+  color: var(--texto-blanco);
+  box-shadow: 0 4px 12px rgba(27, 107, 58, 0.28);
+}
+.nav-item.active i {
+  color: var(--texto-blanco);
+}
+
+.nav-item .badge-count {
+  margin-left: auto;
+  background: var(--dorado);
+  color: #5D4300;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radio-full);
+}
+
+.sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--borde);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}
+
+.sidebar-footer .tech-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.status-dot-pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--verde);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(27, 107, 58, 0.2);
+}
+
+/* --- Contenedor Principal (Main) --- */
+.main-container {
+  flex: 1;
+  margin-left: var(--ancho-sidebar);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+  transition: margin-left var(--transicion-normal);
+}
+
+/* --- Barra Superior (Topbar) --- */
+.topbar {
+  height: var(--altura-topbar);
+  background: var(--tarjeta);
+  border-bottom: 1px solid var(--borde);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  max-width: 600px;
+}
+
+.menu-toggle-btn {
+  display: none;
+  font-size: 1.25rem;
+  color: var(--texto);
+  padding: 0.5rem;
+  border-radius: var(--radio-md);
+  border: 1px solid var(--borde);
+  background: var(--fondo);
+}
+
+.global-search-container {
+  position: relative;
+  width: 100%;
+}
+.global-search-container i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--texto-suave);
+  pointer-events: none;
+}
+.global-search-input {
+  width: 100%;
+  height: 42px;
+  padding: 0 1rem 0 2.6rem;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-full);
+  font-size: 0.88rem;
+  color: var(--texto);
+  transition: all var(--transicion-rapida);
+}
+.global-search-input:focus {
+  background: var(--tarjeta);
+  border-color: var(--verde);
+  box-shadow: 0 0 0 3px rgba(27, 107, 58, 0.12);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quick-action-header-btn {
+  height: 42px;
+  padding: 0 1.2rem;
+  background: var(--verde);
+  color: var(--texto-blanco);
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: var(--radio-full);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 3px 8px rgba(27, 107, 58, 0.2);
+  transition: all var(--transicion-rapida);
+}
+.quick-action-header-btn:hover {
+  background: var(--verde-medio);
+  transform: translateY(-1px);
+}
+.quick-action-header-btn kbd {
+  background: rgba(255, 255, 255, 0.2);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  margin-left: 0.25rem;
+}
+
+.topbar-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.85rem;
+  background: var(--fondo);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio-full);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--texto);
+  white-space: nowrap;
+}
+.topbar-chip i {
+  color: var(--verde);
+}
+
+/* --- Área de Contenido --- */
+.content-area {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* --- Backdrop para mobile --- */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 27, 46, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 95;
+}
+.sidebar-backdrop.active {
+  display: block;
+}
+
+/* --- Navegación Inferior (Móvil) --- */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--altura-bottom-nav);
+  background: var(--tarjeta);
+  border-top: 1px solid var(--borde);
+  z-index: 110;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 0.5rem;
+  box-shadow: 0 -4px 15px rgba(26, 27, 46, 0.05);
+}
+
+.mobile-nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  color: var(--texto-suave);
+  font-size: 0.68rem;
+  font-weight: 600;
+  flex: 1;
+  padding: 0.4rem 0;
+  transition: color var(--transicion-rapida);
+}
+.mobile-nav-btn i {
+  font-size: 1.25rem;
+}
+.mobile-nav-btn.active {
+  color: var(--verde);
+  font-weight: 700;
+}
+
+/* --- Botón Flotante de Acción (FAB en Móvil) --- */
+.fab-nuevo {
+  display: none;
+  position: fixed;
+  bottom: calc(var(--altura-bottom-nav) + 1rem);
+  right: 1.25rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--verde);
+  color: var(--texto-blanco);
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: 0 6px 18px rgba(27, 107, 58, 0.4);
+  z-index: 115;
+  transition: transform var(--transicion-rapida), background-color var(--transicion-rapida);
+}
+.fab-nuevo:active {
+  transform: scale(0.92);
+}
+
+/* --- Responsive Breakpoints --- */
+@media (max-width: 1024px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .sidebar-close-btn {
+    display: block;
+  }
+  .main-container {
+    margin-left: 0;
+  }
+  .menu-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .content-area {
+    padding: 1.5rem 1rem 5rem 1rem;
+  }
+  .mobile-bottom-nav {
+    display: flex;
+  }
+  .fab-nuevo {
+    display: flex;
+  }
+  .topbar-right .quick-action-header-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 0 1rem;
+    height: 60px;
+  }
+  .topbar-chip {
+    font-size: 0.78rem;
+    padding: 0.35rem 0.65rem;
+  }
+  .topbar-chip .chip-tech-name {
+    display: none;
+  }
+}

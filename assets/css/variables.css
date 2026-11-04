@@ -1,0 +1,85 @@
+/* ==========================================================================
+   DELFOS SUPPORT - VARIABLES GLOBALES DE CSS
+   Paleta institucional Delfos, estados, tipografía, radios y sombras
+   ========================================================================== */
+
+:root {
+  /* --- Colores Principales (Paleta Institucional Delfos) --- */
+  --verde:        #1B6B3A;   /* Color principal, botones, ítem activo */
+  --verde-medio:  #175A31;   /* Hover, acentos secundarios */
+  --verde-oscuro: #0D4221;   /* Fin del degradado del banner */
+  --verde-suave:  #E8F5EE;   /* Fondos suaves, píldoras activas claras */
+  --verde-borde:  #C4E2D0;   /* Bordes de elementos destacados */
+
+  --dorado:       #F5B731;   /* Acentos, palabras destacadas, logo */
+  --dorado-hover: #E0A320;   /* Hover de elementos dorados */
+  --dorado-suave: #FEF7EB;   /* Fondo suave ámbar/dorado */
+
+  --texto:        #1A1B2E;   /* Texto principal de alto contraste */
+  --texto-suave:  #6B7280;   /* Texto secundario, subtítulos, placeholders */
+  --texto-blanco: #FFFFFF;   /* Texto sobre verde u oscuro */
+
+  --fondo:        #F6F7F9;   /* Fondo general de la aplicación */
+  --fondo-alt:    #EDF0F4;   /* Fondo secundario / hover sutil */
+  --borde:        #E5E7EB;   /* Bordes finos de tarjetas e inputs */
+  --borde-focus:  #1B6B3A;   /* Borde al enfocar inputs */
+  --tarjeta:      #FFFFFF;   /* Fondo de tarjetas y modales */
+
+  /* --- Pasteles para íconos de tarjetas y categorías --- */
+  --pastel-rosa:  #FCF0FE;
+  --pastel-ambar: #FEF7EB;
+  --pastel-menta: #EBF9F5;
+  --pastel-morado:#F8F1FE;
+  --pastel-azul:  #EFF6FF;
+
+  --pastel-rosa-ico:  #B83280;
+  --pastel-ambar-ico: #B45309;
+  --pastel-menta-ico: #047857;
+  --pastel-morado-ico:#6D28D9;
+  --pastel-azul-ico:  #1D4ED8;
+
+  /* --- Colores de Estado --- */
+  --estado-pendiente:   #F59E0B;
+  --estado-pendiente-bg:#FEF3C7;
+  --estado-proceso:     #3B82F6;
+  --estado-proceso-bg:  #DBEAFE;
+  --estado-resuelto:    #16A34A;
+  --estado-resuelto-bg: #DCFCE7;
+  --estado-error:       #DC2626;
+  --estado-error-bg:    #FEE2E2;
+
+  /* --- Dimensiones y Radios --- */
+  --radio-sm: 8px;
+  --radio-md: 10px;
+  --radio-lg: 14px;          /* Radio estándar de tarjetas Delfos */
+  --radio-xl: 20px;
+  --radio-full: 9999px;      /* Píldoras y botones redondeados */
+
+  --altura-boton: 48px;      /* Altura mínima de accesibilidad táctil */
+  --ancho-sidebar: 270px;
+  --altura-topbar: 70px;
+  --altura-bottom-nav: 68px;
+
+  /* --- Sombras sutiles y elegantes --- */
+  --sombra-sm: 0 1px 3px rgba(26, 27, 46, 0.05);
+  --sombra-md: 0 4px 12px rgba(26, 27, 46, 0.06);
+  --sombra-lg: 0 10px 25px rgba(26, 27, 46, 0.08);
+  --sombra-modal: 0 20px 40px rgba(13, 66, 33, 0.18);
+
+  /* --- Tipografía --- */
+  --fuente-principal: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* --- Transiciones --- */
+  --transicion-rapida: 0.15s ease;
+  --transicion-normal: 0.25s ease;
+  --transicion-suave: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
