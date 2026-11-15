@@ -41,11 +41,14 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
                 <div class="login-setup-warning">
                   <div class="setup-warning-header">
                     <i class="fa-solid fa-triangle-exclamation"></i>
-                    <strong>Configuración de Nube Requerida</strong>
+                    <strong>Paso previo: Conectar tu Nube de Firebase</strong>
                   </div>
-                  <p>
-                    Para activar la sincronización en tiempo real entre tus dispositivos, sigue los 8 pasos de la guía <strong>SETUP-FIREBASE.md</strong> y coloca tus credenciales en <code>assets/js/firebase-config.js</code>.
+                  <p style="margin-bottom:0.75rem;">
+                    Los campos de correo y contraseña están bloqueados temporalmente porque aún no se han colocado tus credenciales reales en <code>assets/js/firebase-config.js</code>.
                   </p>
+                  <button type="button" class="btn btn-sm btn-dorado" style="width:100%; font-weight:700;" onclick="Delfos.Vistas.Login.mostrarModalConfigurarClaves()">
+                    <i class="fa-solid fa-key"></i> Pegar credenciales de Firebase aquí
+                  </button>
                 </div>
               ` : ''}
 
@@ -118,6 +121,43 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
       if (errorBox) {
         errorBox.textContent = msg;
         errorBox.style.display = 'block';
+      }
+    },
+
+    mostrarModalConfigurarClaves: function() {
+      const texto = prompt('Pega aquí el bloque de código o JSON de firebaseConfig que te dio Firebase Console (ej: const firebaseConfig = { apiKey: "AIza...", ... }):');
+      if (!texto) return;
+
+      try {
+        let configObj = null;
+        // Intentar parsear como JSON directo o extraer campos por regex
+        if (texto.trim().startsWith('{')) {
+          configObj = JSON.parse(texto);
+        } else {
+          // Extraer campos clave
+          const extraer = (campo) => {
+            const m = texto.match(new RegExp(`${campo}["'\\s]*:?["'\\s]*([^"',\\s\\n\\r]+)`));
+            return m ? m[1].replace(/["',;]/g, '').trim() : '';
+          };
+          configObj = {
+            apiKey: extraer('apiKey'),
+            authDomain: extraer('authDomain'),
+            projectId: extraer('projectId'),
+            storageBucket: extraer('storageBucket'),
+            messagingSenderId: extraer('messagingSenderId'),
+            appId: extraer('appId')
+          };
+        }
+
+        if (configObj && configObj.apiKey && configObj.projectId) {
+          localStorage.setItem('delfos_firebase_config_custom', JSON.stringify(configObj));
+          alert('¡Credenciales de Firebase guardadas correctamente! La página se recargará ahora para conectar tu nube.');
+          window.location.reload();
+        } else {
+          alert('No se pudieron detectar las claves apiKey o projectId en el texto pegado. Verifica el código de Firebase Console.');
+        }
+      } catch (e) {
+        alert('Error al leer las credenciales: ' + e.message);
       }
     }
   };

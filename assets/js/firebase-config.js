@@ -18,7 +18,12 @@
 
 window.Delfos = window.Delfos || {};
 
-window.Delfos.firebaseConfig = {
+let customConfig = null;
+try {
+  customConfig = JSON.parse(localStorage.getItem('delfos_firebase_config_custom') || 'null');
+} catch (e) {}
+
+window.Delfos.firebaseConfig = customConfig || {
   apiKey: "TU_API_KEY",
   authDomain: "TU_PROYECTO.firebaseapp.com",
   projectId: "TU_PROJECT_ID",
