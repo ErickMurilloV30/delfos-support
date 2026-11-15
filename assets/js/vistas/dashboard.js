@@ -60,7 +60,7 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
           <div class="backup-alert-banner">
             <div style="display:flex; align-items:center; gap:0.75rem;">
               <i class="fa-solid fa-triangle-exclamation"></i>
-              <span><strong>Aviso de seguridad:</strong> Hace más de 7 días no descargas una copia de respaldo de tus datos locales.</span>
+              <span><strong>Aviso de seguridad:</strong> Hace ${dias !== 'varios' ? `${dias} días` : 'más de 7 días'} no descargas una copia de respaldo (.json) de tus datos.</span>
             </div>
             <button class="btn btn-sm btn-dorado" onclick="Delfos.Estado.cambiarVista('respaldos')">
               <i class="fa-solid fa-download"></i> Respaldar ahora

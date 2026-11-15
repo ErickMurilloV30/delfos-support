@@ -89,11 +89,18 @@
       </nav>
 
       <div class="sidebar-footer">
-        <div class="tech-indicator">
+        <div class="sync-status-indicator status-sincronizado" id="sync-status-sidebar">
           <span class="status-dot-pulse"></span>
-          <span>100% Offline y Privado</span>
+          <span>Sincronizado</span>
         </div>
-        <span style="font-size:0.75rem; color:var(--texto-suave);">v1.0</span>
+        <button type="button" class="btn-logout" id="btn-logout-sidebar" onclick="Delfos.nube.cerrarSesion()" title="Cerrar sesión técnica">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Cerrar sesión</span>
+        </button>
+        <div style="font-size:0.75rem; color:var(--texto-suave); margin-top:0.35rem; display:flex; justify-content:space-between;">
+          <span>v2.0 &middot; Cloud</span>
+          <span id="sidebar-user-badge" style="font-weight:600;"></span>
+        </div>
       </div>
     </aside>
 
@@ -112,6 +119,12 @@
         </div>
 
         <div class="topbar-right">
+          <!-- Chip de Estado de Sincronización en la Nube -->
+          <div class="sync-status-chip chip-sincronizado" id="sync-status-topbar" title="Sincronización en la nube">
+            <i class="fa-solid fa-cloud-check" style="color:var(--verde);"></i>
+            <span>Nube OK</span>
+          </div>
+
           <!-- Botón de Registro Rápido en Encabezado (Desktop) -->
           <button type="button" class="quick-action-header-btn" onclick="Delfos.Estado.cambiarVista('nuevo-soporte')">
             <i class="fa-solid fa-plus"></i>
@@ -171,6 +184,9 @@
     <div id="toast-container"></div>
   </div>
 
+  <!-- Contenedor de Pantalla de Inicio de Sesión (Se muestra cuando no hay sesión activa) -->
+  <div id="login-view-container" style="display:none;"></div>
+
   <!-- ==========================================================================
        LIBRERÍAS DE TERCEROS POR CDN (VERSIONES FIJAS)
        Sin bundlers, sin frameworks, compatible con file:// y servidores estáticos
@@ -186,6 +202,12 @@
   <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
   <!-- ==========================================================================
+       CONFIGURACIÓN E INICIALIZACIÓN DE FIREBASE (NUBE)
+       ========================================================================== -->
+  <script src="assets/js/firebase-config.js"></script>
+  <script type="module" src="assets/js/firebase-init.js"></script>
+
+  <!-- ==========================================================================
        SCRIPTS DE LA APLICACIÓN DELFOS SUPPORT (NAMESPACE GLOBAL window.Delfos)
        ========================================================================== -->
   <script src="assets/js/db.js"></script>
@@ -194,6 +216,7 @@
   <script src="assets/js/estado.js"></script>
 
   <!-- Módulos de Vistas -->
+  <script src="assets/js/vistas/login.js"></script>
   <script src="assets/js/vistas/dashboard.js"></script>
   <script src="assets/js/vistas/nuevo-soporte.js"></script>
   <script src="assets/js/vistas/historial.js"></script>

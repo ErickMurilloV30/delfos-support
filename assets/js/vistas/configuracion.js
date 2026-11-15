@@ -48,6 +48,9 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
               <button type="button" class="btn btn-sm ${pestanaActiva === 'plantillas' ? 'btn-primary' : 'btn-secondary'}" style="border-radius:0; border:none; border-bottom:${pestanaActiva === 'plantillas' ? '3px solid var(--verde)' : 'none'};" onclick="Delfos.Vistas.Configuracion.cambiarPestana('plantillas')">
                 <i class="fa-solid fa-bolt"></i> Plantillas Rápidas
               </button>
+              <button type="button" class="btn btn-sm ${pestanaActiva === 'sincronizacion' ? 'btn-primary' : 'btn-secondary'}" style="border-radius:0; border:none; border-bottom:${pestanaActiva === 'sincronizacion' ? '3px solid var(--verde)' : 'none'};" onclick="Delfos.Vistas.Configuracion.cambiarPestana('sincronizacion')">
+                <i class="fa-solid fa-cloud"></i> Sincronización y Nube
+              </button>
             </div>
 
             <!-- Contenido dinámico según pestaña activa -->
@@ -78,6 +81,8 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
         this.renderPestanaActividades(container);
       } else if (pestanaActiva === 'plantillas') {
         this.renderPestanaPlantillas(container);
+      } else if (pestanaActiva === 'sincronizacion') {
+        this.renderPestanaSincronizacion(container);
       }
     },
 
@@ -522,6 +527,96 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
       await Delfos.Estado.recargarCatalogos();
       Delfos.Utils.showToast(`Elemento ${item.activo ? 'activado' : 'desactivado'}`, 'info');
       this.renderPestanaContenido();
+    },
+
+    // --- PESTAÑA 6: SINCRONIZACIÓN Y NUBE ---
+    renderPestanaSincronizacion: function(container) {
+      const nube = Delfos.nube || {};
+      const user = nube.currentUser;
+      const isConfigured = nube.isConfigured;
+      const stats = nube.statsHoy || { lecturas: 0, escrituras: 0 };
+      const online = navigator.onLine;
+
+      container.innerHTML = `
+        <div style="max-width:850px;">
+          <h3 style="font-size:1.15rem; font-weight:800; color:var(--texto); margin-bottom:0.5rem; display:flex; align-items:center; gap:0.6rem;">
+            <i class="fa-solid fa-cloud" style="color:var(--verde);"></i> Estado de Sincronización en la Nube
+          </h3>
+          <p style="color:var(--texto-suave); font-size:0.88rem; margin-bottom:1.5rem;">
+            Delfos Support utiliza <strong>Cloud Firestore</strong> para mantener tus dispositivos sincronizados en tiempo real con respaldo local automático fuera de línea.
+          </p>
+
+          <!-- Tarjeta de Estado de Conexión -->
+          <div class="card" style="padding:1.5rem; margin-bottom:1.5rem; border-left:4px solid ${online ? 'var(--verde)' : '#9CA3AF'};">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+              <div>
+                <div style="font-size:0.78rem; text-transform:uppercase; font-weight:700; color:var(--texto-suave); letter-spacing:0.5px;">
+                  Conexión Actual
+                </div>
+                <div style="font-size:1.15rem; font-weight:800; color:var(--texto); margin-top:0.2rem; display:flex; align-items:center; gap:0.5rem;">
+                  <span class="${online ? 'status-dot-pulse' : 'status-dot-offline'}"></span>
+                  <span>${online ? 'En Línea &middot; Sincronización Automática Activa' : 'Modo Fuera de Línea (Cambios guardados localmente)'}</span>
+                </div>
+                ${user ? `
+                  <div style="font-size:0.85rem; color:var(--texto-suave); margin-top:0.4rem;">
+                    <i class="fa-regular fa-circle-user" style="color:var(--verde);"></i> Técnico autenticado: <strong>${user.email}</strong>
+                  </div>
+                ` : ''}
+              </div>
+
+              ${user ? `
+                <button type="button" class="btn btn-sm btn-danger" onclick="if(confirm('¿Cerrar sesión en este dispositivo?')){ Delfos.nube.cerrarSesion(); }">
+                  <i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión
+                </button>
+              ` : ''}
+            </div>
+          </div>
+
+          <!-- Monitoreo de Cuotas Spark (A5) -->
+          <div class="card" style="padding:1.5rem; margin-bottom:1.5rem; background:#F8FAFC;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+              <h4 style="font-size:0.98rem; font-weight:800; color:var(--texto); display:flex; align-items:center; gap:0.5rem;">
+                <i class="fa-solid fa-chart-line" style="color:var(--verde);"></i>
+                <span>Consumo Estimado de Nube de Hoy (Plan Spark Gratuito)</span>
+              </h4>
+              <span class="badge badge-resuelto" style="font-size:0.75rem;">100% Gratuito</span>
+            </div>
+
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; margin-bottom:1rem;">
+              <div style="background:#FFFFFF; border:1px solid var(--borde); border-radius:8px; padding:1rem;">
+                <div style="font-size:0.78rem; font-weight:700; color:var(--texto-suave);">Lecturas hoy (aprox.)</div>
+                <div style="font-size:1.5rem; font-weight:800; color:var(--verde); margin:0.25rem 0;">~${stats.lecturas}</div>
+                <div style="font-size:0.75rem; color:var(--texto-suave);">Límite gratuito: 50.000 / día (<1%)</div>
+              </div>
+
+              <div style="background:#FFFFFF; border:1px solid var(--borde); border-radius:8px; padding:1rem;">
+                <div style="font-size:0.78rem; font-weight:700; color:var(--texto-suave);">Escrituras hoy (aprox.)</div>
+                <div style="font-size:1.5rem; font-weight:800; color:var(--dorado); margin:0.25rem 0;">~${stats.escrituras}</div>
+                <div style="font-size:0.75rem; color:var(--texto-suave);">Límite gratuito: 20.000 / día (<1%)</div>
+              </div>
+            </div>
+
+            <p style="font-size:0.8rem; color:var(--texto-suave); margin-bottom:0;" id="firebase-consumo-estimado">
+              <i class="fa-solid fa-shield-halved" style="color:var(--verde);"></i> Para un técnico individual, el consumo diario típico utiliza menos del 0.5% del límite gratuito de Google Cloud.
+            </p>
+          </div>
+
+          <!-- Información Técnica de Seguridad -->
+          <div class="card" style="padding:1.5rem; margin-bottom:1.5rem;">
+            <h4 style="font-size:0.95rem; font-weight:800; color:var(--texto); margin-bottom:0.75rem; display:flex; align-items:center; gap:0.5rem;">
+              <i class="fa-solid fa-lock" style="color:var(--verde);"></i>
+              <span>Seguridad de los Datos (Reglas de Firestore)</span>
+            </h4>
+            <p style="font-size:0.85rem; color:#4B5563; line-height:1.6; margin-bottom:0.75rem;">
+              Todos tus datos se almacenan exclusivamente bajo la ruta protegida <code>usuarios/{tu_uid}/*</code>.
+              Las reglas de seguridad validan en los servidores de Google que <strong>nadie más</strong> pueda leer o modificar tus registros.
+            </p>
+            <div style="font-size:0.8rem; background:#F1F5F9; padding:0.6rem 0.85rem; border-radius:6px; font-family:monospace; color:#334155;">
+              allow read, write: if request.auth != null && request.auth.uid == uid;
+            </div>
+          </div>
+        </div>
+      `;
     }
   };
 

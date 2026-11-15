@@ -1,8 +1,12 @@
 /**
  * ==========================================================================
- * DELFOS SUPPORT - APLICACIÓN PRINCIPAL (ORQUESTADOR Y BOOTSTRAP)
- * Inicialización de base de datos, carga de catálogos en caché, reloj en vivo,
- * atajos de teclado globales (N, Ctrl+Enter, Esc), buscador y enrutamiento SPA.
+ * DELFOS SUPPORT - APLICACIÓN PRINCIPAL (ORQUESTADOR Y BOOTSTRAP CON FIREBASE)
+ * ==========================================================================
+ * Control de ciclo de vida:
+ * 1. Inicializa IndexedDB local de soporte.
+ * 2. Verifica autenticación en Firebase Nube (Auth + Cloud Firestore).
+ * 3. Si no hay sesión: muestra Pantalla de Login institucional, sin exponer datos.
+ * 4. Si hay sesión: activa listeners en tiempo real, carga catálogos e inicia la App.
  * ==========================================================================
  */
 
@@ -11,74 +15,161 @@ window.Delfos = window.Delfos || {};
 (function(Delfos) {
   'use strict';
 
+  let sistemaIniciado = false;
+
   const App = {
+    /**
+     * Punto de entrada principal
+     */
     init: async function() {
       try {
-        console.log('Iniciando Delfos Support...');
+        console.log('Iniciando Delfos Support v2.0 (Cloud)...');
 
-        // 1. Inicializar base de datos IndexedDB
+        // 1. Inicializar repositorio IndexedDB base
         await Delfos.DB.init();
 
-        // 2. Cargar catálogos y esquema base si es primera ejecución
-        await Delfos.Seed.inicializarBaseSiVacia();
+        // 2. Escuchar cambios de estado de autenticación de Firebase
+        if (window.Delfos.nube) {
+          this.configurarControlAcceso();
+        } else {
+          window.addEventListener('delfos-firebase-ready', () => {
+            this.configurarControlAcceso();
+          }, { once: true });
+        }
 
-        // 3. Cargar todos los catálogos en memoria
-        await Delfos.Estado.recargarCatalogos();
+        // Si después de 1 segundo Firebase no ha respondido (ej. sin internet en arranque)
+        setTimeout(() => {
+          if (!sistemaIniciado && (!Delfos.nube || !Delfos.nube.currentUser)) {
+            this.evaluarEstadoSesion();
+          }
+        }, 800);
 
-        // 4. Inicializar componentes de la interfaz global
-        this.iniciarRelojTopbar();
-        this.actualizarIdentidadTopbar();
-        this.configurarBuscadorGlobal();
-        this.configurarAtajosTeclado();
-        this.configurarEventosUI();
-
-        // 5. Cargar vista inicial según hash o por defecto 'dashboard'
-        const hash = window.location.hash.replace('#', '');
-        const vistaInicial = ['dashboard', 'nuevo-soporte', 'historial', 'estadisticas', 'inventario', 'recorrido', 'informes', 'respaldos', 'configuracion'].includes(hash)
-          ? hash
-          : 'dashboard';
-
-        Delfos.Estado.cambiarVista(vistaInicial);
-
-        console.log('Delfos Support: Sistema listo para operar.');
       } catch (err) {
         console.error('Error fatal al iniciar Delfos Support:', err);
-        const container = document.getElementById('vista-activa-container');
-        if (container) {
-          container.innerHTML = `
-            <div style="padding:3rem; text-align:center;">
-              <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem; color:var(--estado-error); margin-bottom:1rem;"></i>
-              <h2 style="font-weight:800; color:var(--texto);">Error al iniciar la base de datos local</h2>
-              <p style="color:var(--texto-suave); margin-top:0.5rem; max-width:500px; margin-left:auto; margin-right:auto;">
-                ${err.message || 'IndexedDB no pudo ser inicializado. Verifica que tu navegador permita almacenamiento local.'}
-              </p>
-            </div>
-          `;
-        }
       }
     },
 
     /**
-     * Reloj en vivo en la barra superior con hora y fecha
+     * Evalúa si mostrar la pantalla de Login o el Shell principal
+     */
+    configurarControlAcceso: function() {
+      const nube = Delfos.nube;
+
+      if (!nube || !nube.isConfigured) {
+        // Firebase no configurado aún con credenciales reales
+        this.mostrarPantallaLogin();
+        return;
+      }
+
+      // Escuchar cambios de autenticación
+      nube.onAuthChange((user) => {
+        if (user) {
+          this.iniciarSistemaConSesion(user);
+        } else {
+          this.mostrarPantallaLogin();
+        }
+      });
+    },
+
+    evaluarEstadoSesion: function() {
+      if (Delfos.nube && Delfos.nube.currentUser) {
+        this.iniciarSistemaConSesion(Delfos.nube.currentUser);
+      } else {
+        this.mostrarPantallaLogin();
+      }
+    },
+
+    /**
+     * Muestra la pantalla de inicio de sesión y oculta la aplicación
+     */
+    mostrarPantallaLogin: function() {
+      const appShell = document.querySelector('.app-shell');
+      const loginContainer = document.getElementById('login-view-container');
+
+      if (appShell) appShell.style.display = 'none';
+      if (loginContainer) {
+        loginContainer.style.display = 'block';
+        if (Delfos.Vistas && Delfos.Vistas.Login) {
+          Delfos.Vistas.Login.render(loginContainer);
+        }
+      }
+
+      // Detener listeners de datos para no exponer nada
+      Delfos.DB.detenerListenersNube();
+      sistemaIniciado = false;
+    },
+
+    /**
+     * Inicia el sistema con la sesión del técnico autenticado
+     */
+    iniciarSistemaConSesion: async function(user) {
+      const appShell = document.querySelector('.app-shell');
+      const loginContainer = document.getElementById('login-view-container');
+
+      if (loginContainer) loginContainer.style.display = 'none';
+      if (appShell) appShell.style.display = 'flex';
+
+      // Actualizar nombre o correo del técnico en el encabezado
+      this.actualizarIdentidadTopbar(user);
+
+      // Iniciar listeners en tiempo real de Firestore
+      Delfos.DB.iniciarListenersNube();
+
+      // Sembrar catálogos por defecto si la cuenta está completamente vacía
+      await Delfos.Seed.inicializarBaseSiVacia();
+
+      // Cargar catálogos en memoria
+      await Delfos.Estado.recargarCatalogos();
+
+      if (!sistemaIniciado) {
+        this.iniciarRelojTopbar();
+        this.configurarBuscadorGlobal();
+        this.configurarAtajosTeclado();
+        this.configurarEventosUI();
+        sistemaIniciado = true;
+      }
+
+      // Cargar vista inicial según hash o 'dashboard'
+      const hash = window.location.hash.replace('#', '');
+      const vistasPermitidas = ['dashboard', 'nuevo-soporte', 'historial', 'estadisticas', 'inventario', 'recorrido', 'informes', 'respaldos', 'configuracion'];
+      const vistaInicial = vistasPermitidas.includes(hash) ? hash : 'dashboard';
+
+      Delfos.Estado.cambiarVista(vistaInicial);
+
+      // Actualizar indicador de estado en la interfaz
+      if (Delfos.nube) {
+        Delfos.nube.actualizarIndicador('sincronizado');
+      }
+
+      console.log('Delfos Support: Sesión técnica iniciada correctamente para:', user.email);
+    },
+
+    /**
+     * Reloj en vivo en la barra superior
      */
     iniciarRelojTopbar: function() {
       const elHora = document.querySelector('.chip-clock-time');
       const actualizar = () => {
-        if (elHora) {
-          elHora.textContent = Delfos.Utils.horaActual24();
-        }
+        if (elHora) elHora.textContent = Delfos.Utils.horaActual24();
       };
       actualizar();
       setInterval(actualizar, 10000);
     },
 
     /**
-     * Muestra el nombre del técnico configurado en el chip superior
+     * Muestra la identidad del técnico en topbar y sidebar
      */
-    actualizarIdentidadTopbar: function() {
+    actualizarIdentidadTopbar: function(user) {
       const elNombre = document.querySelector('.chip-tech-name');
-      if (elNombre) {
-        elNombre.textContent = Delfos.Estado.config.tecnico || 'Técnico de Soporte';
+      const elSidebarUser = document.getElementById('sidebar-user-badge');
+      const nombreMostrar = (Delfos.Estado.config && Delfos.Estado.config.tecnico) 
+        ? Delfos.Estado.config.tecnico 
+        : (user ? user.email.split('@')[0] : 'Técnico TI');
+
+      if (elNombre) elNombre.textContent = nombreMostrar;
+      if (elSidebarUser && user) {
+        elSidebarUser.textContent = user.email;
+        elSidebarUser.title = `Conectado como ${user.email}`;
       }
     },
 
@@ -99,7 +190,9 @@ window.Delfos = window.Delfos || {};
               const filtroTexto = document.getElementById('filtro-texto');
               if (filtroTexto) {
                 filtroTexto.value = query;
-                Delfos.Vistas.Historial.aplicarFiltros();
+                if (Delfos.Vistas.Historial && Delfos.Vistas.Historial.aplicarFiltros) {
+                  Delfos.Vistas.Historial.aplicarFiltros();
+                }
               }
             }, 100);
           }
@@ -109,42 +202,36 @@ window.Delfos = window.Delfos || {};
 
     /**
      * Atajos de teclado:
-     * - Tecla 'N': abre formulario "Nuevo soporte" (si no se está escribiendo en un input)
-     * - 'Ctrl + Enter': guarda el formulario de soporte activo
-     * - 'Escape': cierra modales abiertos
+     * - Tecla 'N': abre formulario "Nuevo soporte"
+     * - 'Ctrl + Enter': guarda soporte
+     * - 'Escape': cierra modales
      */
     configurarAtajosTeclado: function() {
       window.addEventListener('keydown', (e) => {
         const tag = (e.target.tagName || '').toLowerCase();
         const esCampoTexto = tag === 'input' || tag === 'textarea' || tag === 'select';
 
-        // Atajo 'N' para Nuevo soporte
-        if ((e.key === 'n' || e.key === 'N') && !esCampoTexto && !e.ctrlKey && !e.altKey && !e.metaKey) {
+        if ((e.key === 'n' || e.key === 'N') && !esCampoTexto && !e.ctrlKey && !e.metaKey && !e.altKey) {
           e.preventDefault();
           Delfos.Estado.cambiarVista('nuevo-soporte');
-          return;
         }
 
-        // Atajo 'Ctrl + Enter' para Guardar
         if (e.ctrlKey && e.key === 'Enter') {
           if (Delfos.Estado.vistaActual === 'nuevo-soporte') {
-            e.preventDefault();
-            Delfos.Vistas.NuevoSoporte.guardar(false);
+            const btnGuardar = document.getElementById('btn-guardar-soporte');
+            if (btnGuardar) btnGuardar.click();
           }
-          return;
         }
 
-        // Atajo 'Escape' para cerrar modales
         if (e.key === 'Escape') {
-          const modalesAbiertos = document.querySelectorAll('.modal-overlay.open');
-          modalesAbiertos.forEach(m => m.classList.remove('open'));
-          document.body.style.overflow = '';
+          const modales = document.querySelectorAll('.modal-overlay.active');
+          modales.forEach(m => m.classList.remove('active'));
         }
       });
     },
 
     /**
-     * Eventos de navegación UI (Sidebar, Drawer Móvil, FAB)
+     * Eventos de navegación y UI
      */
     configurarEventosUI: function() {
       // Menú lateral desktop y móvil
@@ -184,7 +271,7 @@ window.Delfos = window.Delfos || {};
         });
       }
 
-      // Escuchar cambios de hash para navegación con historial del navegador
+      // Navegación por hash
       window.addEventListener('hashchange', () => {
         const h = window.location.hash.replace('#', '');
         if (h && h !== Delfos.Estado.vistaActual) {
