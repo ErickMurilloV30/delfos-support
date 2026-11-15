@@ -129,6 +129,21 @@ const firebaseConfig = {
 
 ---
 
+## PASO 9: Migrar los Datos Reales de tu Celular a la Nube (En 1 Clic)
+
+Como tus datos previos (como el Salón Zeus o el Laboratorio Olmedo) estaban guardados en la memoria interna de tu celular, sigue estos 3 pasos rápidos desde tu teléfono para subirlos a la nube:
+
+1. **Abre el enlace en tu celular** e inicia sesión.
+2. Toca en el menú inferior **Ajustes (Configuración)** ➔ pestaña **Sincronización y Nube**.
+3. Verás la tarjeta del **Asistente de Migración**:
+   - El sistema analiza automáticamente tu celular y te muestra tus registros reales.
+   - Marca la casilla *"Excluir datos de ejemplo"* para subir únicamente tus datos verdaderos de trabajo.
+   - Toca el botón verde grande: **"🚀 Subir los datos de este dispositivo a la nube"**.
+4. **Protección automática:** El celular descargará primero un archivo `.json` de respaldo en tus descargas y luego subirá los salones y soportes a Firebase con una barra de progreso.
+5. **¡Listo!** En cuanto termine, abre la página en tu computadora: ¡todos los salones y soportes de tu celular aparecerán al instante en tu PC!
+
+---
+
 ## ❓ Si Algo Falla (Solución Rápida)
 
 ### 1. Mensaje: "Error de permisos en la base de datos" (`permission-denied`)

@@ -572,6 +572,9 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
             </div>
           </div>
 
+          <!-- Contenedor del Asistente de Migración de Celular a la Nube (Fase 2) -->
+          <div id="migracion-asistente-box" style="margin-bottom:1.5rem;"></div>
+
           <!-- Monitoreo de Cuotas Spark (A5) -->
           <div class="card" style="padding:1.5rem; margin-bottom:1.5rem; background:#F8FAFC;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
@@ -617,6 +620,14 @@ window.Delfos.Vistas = window.Delfos.Vistas || {};
           </div>
         </div>
       `;
+
+      // Cargar el asistente de migración si está disponible
+      if (Delfos.Migracion && typeof Delfos.Migracion.renderAsistente === 'function') {
+        const box = document.getElementById('migracion-asistente-box');
+        if (box) {
+          Delfos.Migracion.renderAsistente(box);
+        }
+      }
     }
   };
 

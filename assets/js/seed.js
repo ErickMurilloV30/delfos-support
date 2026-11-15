@@ -195,13 +195,13 @@ window.Delfos = window.Delfos || {};
     cargarDatosEjemplo: async function() {
       // 1. Crear varios salones y áreas en los 3 edificios
       const salonesNuevos = [
-        { id: 'ub_p_s101', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 101 - 1ro BGU', referencia: 'Planta Alta', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_p_s102', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 102 - 2do BGU', referencia: 'Planta Alta', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_p_s103', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 103 - 3ro BGU', referencia: 'Extensión', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_p_biblio', edificioId: 'edif_principal', tipoId: 'tipo_ub_otro', nombre: 'Biblioteca Central', referencia: 'Extensión PB', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_adm_rectorado', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Rectorado', referencia: 'Piso 2', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_adm_colecturia', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Colecturía', referencia: 'Piso 1', revisadoEn: new Date().toISOString(), activo: true },
-        { id: 'ub_adm_secretaria', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Secretaría General', referencia: 'Piso 1', revisadoEn: new Date().toISOString(), activo: true }
+        { id: 'ub_p_s101', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 101 - 1ro BGU', referencia: 'Planta Alta', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_p_s102', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 102 - 2do BGU', referencia: 'Planta Alta', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_p_s103', edificioId: 'edif_principal', tipoId: 'tipo_ub_salon', nombre: 'Aula 103 - 3ro BGU', referencia: 'Extensión', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_p_biblio', edificioId: 'edif_principal', tipoId: 'tipo_ub_otro', nombre: 'Biblioteca Central', referencia: 'Extensión PB', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_adm_rectorado', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Rectorado', referencia: 'Piso 2', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_adm_colecturia', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Colecturía', referencia: 'Piso 1', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true },
+        { id: 'ub_adm_secretaria', edificioId: 'edif_admin', tipoId: 'tipo_ub_area_admin', nombre: 'Secretaría General', referencia: 'Piso 1', revisadoEn: new Date().toISOString(), activo: true, ejemplo: true, esEjemplo: true }
       ];
       await Delfos.DB.guardarLote('ubicaciones', salonesNuevos);
 
@@ -328,20 +328,27 @@ window.Delfos = window.Delfos || {};
     },
 
     /**
-     * Elimina todos los registros de prueba identificados con 'esEjemplo: true'
+     * Elimina todos los registros de prueba identificados con 'ejemplo: true' o 'esEjemplo: true'
+     * tanto en la base de datos local como en la nube
      */
     borrarDatosEjemplo: async function() {
-      const soportes = await Delfos.DB.listar('soportes', s => s.esEjemplo);
+      const soportes = await Delfos.DB.listar('soportes', s => s.ejemplo || s.esEjemplo);
       for (const s of soportes) {
         await Delfos.DB.eliminar('soportes', s.id);
       }
 
-      const equipos = await Delfos.DB.listar('equipos', e => e.esEjemplo);
+      const equipos = await Delfos.DB.listar('equipos', e => e.ejemplo || e.esEjemplo);
       for (const e of equipos) {
         await Delfos.DB.eliminar('equipos', e.id);
       }
 
-      console.log('Delfos Support: Datos de ejemplo eliminados.');
+      const ubicaciones = await Delfos.DB.listar('ubicaciones', u => u.ejemplo || u.esEjemplo);
+      for (const u of ubicaciones) {
+        await Delfos.DB.eliminar('ubicaciones', u.id);
+      }
+
+      await Delfos.Estado.recargarCatalogos();
+      console.log('Delfos Support: Datos de ejemplo eliminados correctamente.');
     }
   };
 
